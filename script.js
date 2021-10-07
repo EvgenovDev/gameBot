@@ -1,30 +1,59 @@
 'use strict';
 
 
-const startGame = (num) => {
-
-	const isNumber = () => {
-		return !isNaN(parseFloat(num)) && isFinite(num) && (num !== null);
-	};
-
-	if (num == ourNumber && isNumber(num)) {
-		return alert("Поздравляю, Вы угадали!!!");
-	} else if (num < ourNumber && isNumber(num)) {
-		num = prompt("К сожалению,вы не угадали,ваше число меньше,попробуйте еще раз и введите число");
-		startGame(num);
-	} else if (num > ourNumber && isNumber(num)) {
-		num = prompt("К сожалению,вы не угадали,ваше число больше,попробуйте еще раз и введите число");
-		startGame(num);
-	} else if (num === null) {
-		return alert("Игра окончена");
-	} else if (!isNumber(num)) {
-		num = prompt("Введите число");
-		startGame(num);
-	}
+const isNumber = (num) => {
+	return !isNaN(parseFloat(num)) && isFinite(num) && (num !== null);
 };
 
-alert(`Вас приветствует игра "Загадывание случайного числа от 1 до 100!`);
-let userNumber = prompt("Угадай число от 1 до 100:", "15");
-let ourNumber = 23;
+const startGame = () => {
+	alert(`Вас приветствует игра "Загадывание случайного числа от 1 до 100!`);
+	let ourNumber = 23;
+	let mistake = 4;
+	const repeatGame = () => {
+		let num = prompt("Число ваших попыток = " + mistake + " Введите ваше число");
+			if (num == ourNumber && isNumber(num)) {
+				if(prompt("Поздравляю, Вы угадали!!! Хотите сыграть еще?","Нажмите ОК,чтобы сыграrepeatGameз или отмена чтобы закрыть игру") == "string") {
+					mistake = 10;
+					repeatGame();
+				} else if (num === null) {
+					return alert("Игра окончена");
+				}
+			} else if (num < ourNumber && isNumber(num)) {
+				if(mistake > 1){
+					--mistake;
+					alert("Ваше число меньше");
+					repeatGame();
+				} else {
+						num = prompt("Попытки закончились хотите сыграть еще?","Нажмите ОК,чтобы сыграть еще раз или отмена чтобы закрыть игру");
+							if(num == "string") {
+								mistake = 10;
+								repeatGame();
+							} else if (num === null) {
+								return alert("Игра окончена");
+							}
+				}
+			} else if ((num > ourNumber && isNumber(num))) {
+				if(mistake > 1){
+					--mistake;
+					alert("Ваше число больше");
+					repeatGame();
+				} else {
+						num = prompt("Попытки закончились хотите сыграть еще?","Нажмите ОК,чтобы сыграть еще раз или отмена чтобы закрыть игру");
+							if(num == "string") {
+								mistake = 10;
+								repeatGame();
+							} else if (num === null) {
+								return alert("Игра окончена");
+							}
+				}
+			} else if (num === null) {
+				return alert("Игра окончена");
+			} else if (!isNumber(num)) {
+				repeatGame();
+			}
+		};
 
-startGame(userNumber);
+		repeatGame();
+};
+
+startGame();
